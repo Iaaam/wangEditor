@@ -136,18 +136,12 @@ function pasteTextHtml(editor: Editor, pasteEvents: Function[]) {
                         editor.selection.createEmptyRange()
                         return
                     } else {
-                        //  $textEl.append($(html))
-                        //append会导致聊天记录或者input的内容跑到最后
                         editor.cmd.do('insertHTML', `${html}`) // html
                     }
                     // 如果选区是空段落，移除空段落
                     if (isEmptyParagraph($topElem)) {
                         $topElem.remove()
                     }
-                    // 移动光标到编辑器最后的位置
-                    const lastEl = $textEl.last()
-                    if (!lastEl?.length) return
-                    editor.selection.moveCursor(lastEl.elems[0])
                 } else {
                     editor.cmd.do('insertHTML', `${formatHtml(pasteHtml)}`) // html
                 }
@@ -160,6 +154,10 @@ function pasteTextHtml(editor: Editor, pasteEvents: Function[]) {
             }
             editor.cmd.do('insertHTML', `${formatHtml(pasteText)}`) // text
         }
+        // 获取当前光标所在的dom元素 将光标移至到该元素末尾
+        const $curSelectionElem = editor.selection.getSelectionContainerElem()
+        if (!$curSelectionElem?.length) return
+        editor.selection.moveCursor($curSelectionElem.elems[0])
     }
 
     pasteEvents.push(fn)
