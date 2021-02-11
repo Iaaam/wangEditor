@@ -154,10 +154,6 @@ function pasteTextHtml(editor: Editor, pasteEvents: Function[]) {
             }
             editor.cmd.do('insertHTML', `${formatHtml(pasteText)}`) // text
         }
-        // 获取当前光标所在的dom元素 将光标移至到该元素末尾
-        const $curSelectionElem = editor.selection.getSelectionContainerElem()
-        if (!$curSelectionElem?.length) return
-        editor.selection.moveCursor($curSelectionElem.elems[0])
     }
 
     pasteEvents.push(fn)
